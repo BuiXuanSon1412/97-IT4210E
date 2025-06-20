@@ -16,6 +16,31 @@ public:
     void onPlayButtonClicked();
 
 protected:
+    // varibles to control game flow
+    const int framePerSecond = 30;
+    float dEggBatchY;
+    bool gameState;
+    uint32_t lastUpdateTickCount;
+
+    // seed for random generator
+    uint32_t seed;
+
+    // variables to manage the batch of eggs
+    touchgfx::Image eggBatch[NUM_ROWS][NUM_COLS];
+    bool eggBatchState[NUM_ROWS][NUM_COLS];
+    uint16_t eggBatchBitmapID[NUM_ROWS][NUM_COLS];
+    int eggBatchDegree[NUM_ROWS][NUM_COLS];
+    float eggBatchY[NUM_ROWS];
+    int startRowIndex;
+
+    // variable to manage the shooting egg and the next shooting egg
+    touchgfx::Image shootingEgg, nextShootingEgg;
+    EggState shootingEggState;
+    uint16_t shootingEggBitmapID, nextShootingEggBitmapID;
+    float shootingEggX, shootingEggY;
+    float dShootingEggX, dShootingEggY, dShootingEgg;
+    int leftToRight;
+    int shootingLineEndX, shootingLineEndY;
     
 private:
     
