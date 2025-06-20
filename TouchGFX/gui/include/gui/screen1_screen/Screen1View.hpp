@@ -5,6 +5,46 @@
 #include <gui/screen1_screen/Screen1Presenter.hpp>
 #include <images/BitmapDatabase.hpp>
 
+#define NUM_ROWS 10
+#define NUM_COLS 9
+
+#define EGG_WIDTH 26
+#define EGG_HEIGHT 29
+#define EGG_BLANK_SIZE 8
+
+#define SCREEN_WIDTH 240
+#define PADDING 3
+
+#define LIMIT_Y 270
+#define BASE_Y 295
+
+#define MAX_LEN 90
+
+struct Vec2 {
+	float x, y;
+};
+
+struct Index {
+	int rowIndex, colIndex;
+};
+
+class IndexQueue {
+private:
+	Index q[MAX_LEN];
+	int head = 0, tail = 0;
+public:
+	Index front();
+	bool pop();
+	bool push(Index index);
+	bool empty();
+	bool full();
+};
+enum EggState {
+	IDLE,
+	READY,
+	AIRBORNE,
+};
+
 class Screen1View : public Screen1ViewBase
 {
 public:
