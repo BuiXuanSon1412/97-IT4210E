@@ -98,7 +98,9 @@ protected:
     const int stepsForOddRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {1, -1}, {1, 0}};
 
 private:
-    
+    void updateEggBatch();
+    void renderEggBatch();
+
 };
 
 #endif // SCREEN1VIEW_HPP
