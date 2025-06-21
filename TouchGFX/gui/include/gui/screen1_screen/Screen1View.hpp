@@ -98,6 +98,7 @@ protected:
     const int stepsForOddRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {1, -1}, {1, 0}};
 
 private:
+    void initializeEggBatch();
     void updateEggBatch();
     void renderEggBatch();
 
