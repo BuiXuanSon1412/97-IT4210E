@@ -13,13 +13,41 @@ extern uint16_t highScore;
 
 Screen1View::Screen1View()
 {
+	// prepare for game flow
+	gameState = false;
 
+	// from the start, there will be 3 types of eggs
+	eggBitmapIDRange = 3;
+
+	// generate seed for random generator
+	seed = 1;
 }
 
 void Screen1View::setupScreen()
 {
     Screen1ViewBase::setupScreen();
 
+    remove(scoreContainer);
+
+    add(shootingEgg);
+    shootingEgg.setVisible(false);
+    shootingEgg.invalidate();
+
+    add(nextShootingEgg);
+    nextShootingEgg.setVisible(false);
+    nextShootingEgg.invalidate();
+    for (int i = 0; i < NUM_ROWS; i++) {
+    	for (int j = 0; j < NUM_COLS; j++) {
+       		add(eggBatch[i][j]);
+       	}
+    }
+
+    shootingLine.setVisible(false);
+    shootingLine.invalidate();
+
+    realtimeScoreTextArea.setVisible(false);
+    realtimeScoreTextArea.invalidate();
+    add(scoreContainer);
 }
 
 void Screen1View::tearDownScreen()
