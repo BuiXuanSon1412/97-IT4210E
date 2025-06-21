@@ -82,6 +82,21 @@ protected:
     int leftToRight;
     int shootingLineEndX, shootingLineEndY;
     
+    // array of eggs
+    const uint16_t eggBitmapID[6] = {
+    		BITMAP_BLUE_EGG_ID,
+			BITMAP_GREEN_EGG_ID,
+    		BITMAP_GREENRED_EGG_ID,
+    		BITMAP_GREY_EGG_ID,
+   			BITMAP_ORANGE_EGG_ID,
+   			BITMAP_WHITE_EGG_ID
+    };
+    int eggBitmapIDRange;
+
+    // step to reach neighbors of odd-indexed row egg and even-indexed row egg
+    const int stepsForEvenRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, 0}, {-1, 1}, {1, 0}, {1, 1}};
+    const int stepsForOddRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {1, -1}, {1, 0}};
+
 private:
     
 };
