@@ -102,6 +102,17 @@ private:
     void updateEggBatch();
     void renderEggBatch();
 
+    void initializeShootingEgg();
+    void updateShootingEgg();
+    void renderShootingEgg();
+
+    void initializeNextShootingEgg();
+    void updateNextShootingEgg();
+    void renderNextShootingEgg();
+
+    void initializeShootingLine();
+    void updateShootingLine();
+    void renderShootingLine();
 };
 
 #endif // SCREEN1VIEW_HPP

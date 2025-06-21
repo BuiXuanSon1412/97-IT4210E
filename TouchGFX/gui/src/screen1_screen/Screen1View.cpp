@@ -114,3 +114,120 @@ void Screen1View::updateEggBatch() {
 		eggBatchY[i] += dEggBatchY;
 	}
 }
+void Screen1View::initializeShootingEgg() {
+	shootingEggX = SCREEN_WIDTH * 0.5;
+	shootingEggY = BASE_Y;
+	dShootingEgg = 2;
+	shootingEggState = IDLE;
+
+	shootingEggBitmapID = generateRandomEggBitmapID();
+	shootingEgg.setBitmap(touchgfx::Bitmap(shootingEggBitmapID));
+	shootingEgg.setXY(std::round(shootingEggX - 0.5 * EGG_WIDTH), (int)std::round(BASE_Y - 0.5 * EGG_HEIGHT));
+	shootingEgg.setVisible(true);
+}
+void Screen1View::updateShootingEgg() {
+	//float dx, dy;
+	float dx = controllerX - 127.5f;
+	float dy = controllerY - 127.5f;
+	float d = sqrt(dx * dx + dy * dy);
+
+	switch (shootingEggState) {
+	case IDLE:
+		if (dy > 5) {
+			shootingEggState = READY;
+		}
+		else {
+			dShootingEggX = 0;
+			dShootingEggY = 0;
+		}
+		break;
+	case READY:
+		if (abs(dx) <= 5 && abs(dy) <= 5) {
+			dx = prevControllerX - 127.5f;
+			dy = prevControllerY - 127.5f;
+
+			if (abs(dy / dx) < (BASE_Y - LIMIT_Y) / (0.5 * SCREEN_WIDTH)) {
+				dx = (dx < 0 ? -0.5 * SCREEN_WIDTH : 0.5 * SCREEN_WIDTH);
+				dy = BASE_Y - LIMIT_Y;
+			}
+			if (dy <= 0) break;
+			d = sqrt(dx * dx + dy * dy);
+
+			dShootingEggX = -dx / d;
+			dShootingEggY = -dy / d;
+
+			shootingLineEndX = (int) (0.5 * SCREEN_WIDTH + dShootingEggX * 150);
+			shootingLineEndY = (int) (BASE_Y + dShootingEggY * 150);
+
+			shootingEggState = AIRBORNE;
+		}
+		else if (dy > 0) {
+			if (abs(dy / dx) < (BASE_Y - LIMIT_Y) / (0.5 * SCREEN_WIDTH)) {
+				dx = (dx < 0 ? -0.5 * SCREEN_WIDTH : 0.5 * SCREEN_WIDTH);
+				dy = BASE_Y - LIMIT_Y;
+				d = sqrt(dx * dx + dy * dy);
+			}
+			dShootingEggX = -dx / d;
+			dShootingEggY = -dy / d;
+
+			shootingLineEndX = (int) (0.5 * SCREEN_WIDTH + dShootingEggX * 150);
+			shootingLineEndY = (int) (BASE_Y + dShootingEggY * 150);
+		}
+		break;
+	case AIRBORNE:
+		if (shootingEggX + 0.5 * EGG_WIDTH >= SCREEN_WIDTH
+			|| shootingEggX - 0.5 * EGG_WIDTH <= 0) {
+			dShootingEggX = -dShootingEggX;
+		}
+		shootingEggX += dShootingEggX * dShootingEgg;
+		shootingEggY += dShootingEggY * dShootingEgg;
+		break;
+	default:
+		break;
+	}
+
+}
+
+void Screen1View::renderShootingEgg() {
+	shootingEgg.setBitmap(touchgfx::Bitmap(shootingEggBitmapID));
+	shootingEgg.moveTo((int)std::round(shootingEggX - 0.5 * EGG_WIDTH), std::round(shootingEggY - 0.5 * EGG_HEIGHT));
+	//shootingEgg.invalidate();
+}
+
+void Screen1View::initializeNextShootingEgg() {
+	nextShootingEggBitmapID = generateRandomEggBitmapID();
+	nextShootingEgg.setXY(10, BASE_Y - 0.5 * EGG_HEIGHT);
+	nextShootingEgg.setVisible(true);
+}
+void Screen1View::updateNextShootingEgg() {
+	//sampleEgg.moveTo(sampleEgg.getX(), sampleEgg.getY() + 2);
+}
+
+void Screen1View::renderNextShootingEgg() {
+	nextShootingEgg.setBitmap(touchgfx::Bitmap(nextShootingEggBitmapID));
+	//nextShootingEgg.invalidate();
+}
+
+void Screen1View::initializeShootingLine() {
+	shootingLine.setStart((int)(0.5 * SCREEN_WIDTH), BASE_Y);
+	shootingLine.setVisible(false);
+	shootingLine.invalidate();
+}
+
+void Screen1View::updateShootingLine() {
+	if (shootingEggState == READY
+		|| shootingEggState == AIRBORNE) {
+		shootingLine.setEnd(shootingLineEndX, shootingLineEndY);
+	}
+}
+
+void Screen1View::renderShootingLine() {
+	if (shootingEggState == READY || shootingEggState == AIRBORNE) {
+		shootingLine.setVisible(true);
+		shootingLine.invalidate();
+	}
+	else {
+		shootingLine.setVisible(false);
+		shootingLine.invalidate();
+	}
+}
