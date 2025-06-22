@@ -232,6 +232,7 @@ void Screen1View::renderShootingLine() {
 	}
 }
 
+
 float Screen1View::sign(Vec2 v1, Vec2 v2, Vec2 v3) {
     return (v1.x - v3.x) * (v2.y - v3.y) -
            (v2.x - v3.x) * (v1.y - v3.y);
@@ -243,3 +244,54 @@ bool Screen1View::checkCollisionArea(Vec2 p, Vec2 v1, Vec2 v2, Vec2 v3) {
 
 	return ((b1 == b2) && (b2 == b3));
 }
+
+void Screen1View::updateCurrentScore(uint16_t additionalScore) {
+	currentScore = currentScore + 5 * additionalScore;
+}
+
+void Screen1View::updateHighScore() {
+	highScore = (currentScore > highScore ? currentScore : highScore);
+}
+
+void Screen1View::renderRealtimeScoreTextArea() {
+	Unicode::snprintf(realtimeScoreTextAreaBuffer, sizeof(realtimeScoreTextAreaBuffer), "%05d", (int)(currentScore));
+	realtimeScoreTextArea.setVisible(true);
+	realtimeScoreTextArea.invalidate();
+}
+void Screen1View::renderScoreContainer() {
+	Unicode::snprintf(currentScoreTextAreaBuffer, sizeof(currentScoreTextAreaBuffer), "%05d", (int)(currentScore));
+	Unicode::snprintf(highScoreTextAreaBuffer, sizeof(highScoreTextAreaBuffer), "%05d", (int)(highScore));
+
+	scoreContainer.setVisible(true);
+	scoreContainer.invalidate();
+}
+
+void Screen1View::updateEggBitmapIDRange() {
+	// 3 -> 4 -> 5 -> 6
+	// The number of types of egg increases , the density of similarly colored egg decreases
+	// Estimated highest score is 99999
+	if (level < 4 && currentScore > upperBoundScoreByLevel[level]) {
+		level++;
+		eggBitmapIDRange++;
+		updateEggBatchAfterLevelUp();
+
+	}
+}
+void Screen1View::updateDEggBatchY() {
+	dEggBatchY = 1.0f - (1.0f - 0.03f) * expf(-0.00001f * frameCountFromStart);
+}
+
+void Screen1View::updateEggBatchAfterLevelUp() {
+
+}
+
+uint16_t Screen1View::generateRandomEggBitmapID() {
+	uint32_t randomEggBitmapID = lcd_rand() % eggBitmapIDRange;
+	return eggBitmapID[randomEggBitmapID];
+}
+
+uint32_t Screen1View::lcd_rand() {
+	seed = (1103515245 * seed + 12345) & 0x7fffffff;
+	return seed;
+}
+
