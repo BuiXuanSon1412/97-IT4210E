@@ -1,0 +1,47 @@
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:147:23:virtual touchgfx::Drawable* touchgfx::Drawable::getFirstChild()	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:315:18:virtual void touchgfx::Drawable::setX(int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:327:18:virtual void touchgfx::Drawable::setY(int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:356:18:virtual void touchgfx::Drawable::setWidth(int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:368:18:virtual void touchgfx::Drawable::setHeight(int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:378:18:virtual void touchgfx::Drawable::childGeometryChanged()	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:389:18:virtual void touchgfx::Drawable::handleClickEvent(const touchgfx::ClickEvent&)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:401:18:virtual void touchgfx::Drawable::handleGestureEvent(const touchgfx::GestureEvent&)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:490:18:virtual void touchgfx::Drawable::handleDragEvent(const touchgfx::DragEvent&)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:501:18:virtual void touchgfx::Drawable::handleTickEvent()	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:588:18:virtual void touchgfx::Drawable::moveTo(int16_t, int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:703:18:virtual void touchgfx::Drawable::setupDrawChain(const touchgfx::Rect&, touchgfx::Drawable**)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp:104:18:virtual void touchgfx::Screen::afterTransition()	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp:154:18:virtual void touchgfx::Screen::handleKeyEvent(uint8_t)	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:53:6:virtual void Screen1View::tearDownScreen()	1
+../../TouchGFX/gui/include/gui/screen1_screen/Screen1View.hpp:52:13:Screen1View::~Screen1View()	2
+../../TouchGFX/gui/include/gui/screen1_screen/Screen1View.hpp:52:13:virtual Screen1View::~Screen1View()	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:121:18:virtual void touchgfx::Drawable::invalidateContent() const	2
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Widget.hpp:45:18:virtual void touchgfx::Widget::getLastChild(int16_t, int16_t, touchgfx::Drawable**)	3
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:343:10:void touchgfx::Drawable::setXY(int16_t, int16_t)	1
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/Image.hpp:50:5:touchgfx::Image::Image(const touchgfx::Bitmap&)	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:14:1:Screen1View::Screen1View()	3
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:162:6:void Screen1View::renderEggBatch()	3
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:174:6:void Screen1View::updateEggBatch()	2
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:191:6:void Screen1View::updateShootingEgg()	20
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:254:6:void Screen1View::renderShootingEgg()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:269:6:void Screen1View::renderNextShootingEgg()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:280:6:void Screen1View::updateShootingLine()	2
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:299:7:float Screen1View::sign(Vec2, Vec2, Vec2)	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:303:6:bool Screen1View::checkCollisionArea(Vec2, Vec2, Vec2, Vec2)	2
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:311:6:void Screen1View::updateCurrentScore(uint16_t)	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:315:6:void Screen1View::updateHighScore()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:319:6:void Screen1View::renderRealtimeScoreTextArea()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:326:6:void Screen1View::renderScoreContainer()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:338:6:void Screen1View::updateEggBitmapIDRange()	3
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:349:6:void Screen1View::updateDEggBatchY()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:353:6:void Screen1View::updateEggBatchAfterLevelUp()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:362:10:uint32_t Screen1View::lcd_rand()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:357:10:uint16_t Screen1View::generateRandomEggBitmapID()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:180:6:void Screen1View::initializeShootingEgg()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:260:6:void Screen1View::initializeNextShootingEgg()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:129:6:void Screen1View::initializeEggBatch()	5
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:58:6:virtual void Screen1View::onPlayButtonClicked()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:274:6:void Screen1View::initializeShootingLine()	1
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:287:6:void Screen1View::renderShootingLine()	2
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:85:6:virtual void Screen1View::handleTickEvent()	4
+/home/bxs/97-IT4210E/TouchGFX/gui/src/screen1_screen/Screen1View.cpp:26:6:virtual void Screen1View::setupScreen()	3

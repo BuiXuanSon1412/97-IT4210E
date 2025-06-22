@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Components/ili9341/ili9341.h"
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -1156,7 +1158,7 @@ void StartControllerTask(void *argument)
 
 	  char s[20];
 	  sprintf(s, "%3d-%3d\n", controllerX, controllerY);
-	  HAL_UART_Transmit(&huart1, s, strlen(s), 10);
+	  HAL_UART_Transmit(&huart1, (uint8_t*)s, strlen(s), 10);
 	  HAL_Delay(50);
 	  osDelay(1);
   }

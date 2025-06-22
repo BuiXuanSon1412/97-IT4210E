@@ -83,7 +83,47 @@ void Screen1View::onPlayButtonClicked() {
 }
 
 void Screen1View::handleTickEvent() {
-	
+	Screen1ViewBase::handleTickEvent();
+	uint32_t tickPerFrame = osKernelGetTickFreq() / framePerSecond;
+
+	if (osKernelGetTickCount() - lastUpdateTickCount > tickPerFrame) {
+		if (gameState == false) {
+			updateHighScore();
+			renderScoreContainer();
+			return;
+		}
+		if (eggBatchY[startRowIndex] + 0.5 * EGG_HEIGHT > LIMIT_Y) {
+			gameState = false;
+			return;
+		}
+
+		updateEggBatch();
+		updateShootingEgg();
+		updateShootingLine();
+		updateDEggBatchY();
+
+		if (shootingEggState == AIRBORNE) {
+			//Index shootingEggIndex = detectCollisionBetweenShootingEggAndEggBatch();
+			// detect which eggs shooting egg can drop and update 'eggBatchState'
+			//if (shootingEggIndex.rowIndex != -1 && shootingEggIndex.colIndex != -1) {
+				//uint16_t additionalScore = updateEggBatchAfterCollision(shootingEggIndex);
+				//updateCurrentScore(additionalScore);
+				//updateShootingEggAfterCollision();
+				//updateNextShootingEggAfterCollision();
+				//updateEggBitmapIDRange();
+			//}
+		}
+
+		renderEggBatch();
+		renderShootingEgg();
+		renderNextShootingEgg();
+		renderShootingLine();
+		renderRealtimeScoreTextArea();
+		invalidate();
+
+		frameCountFromStart++;
+		lastUpdateTickCount = osKernelGetTickCount();
+	}
 }
 
 void Screen1View::initializeEggBatch() {
