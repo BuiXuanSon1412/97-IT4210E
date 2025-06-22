@@ -231,3 +231,15 @@ void Screen1View::renderShootingLine() {
 		shootingLine.invalidate();
 	}
 }
+
+float Screen1View::sign(Vec2 v1, Vec2 v2, Vec2 v3) {
+    return (v1.x - v3.x) * (v2.y - v3.y) -
+           (v2.x - v3.x) * (v1.y - v3.y);
+}
+bool Screen1View::checkCollisionArea(Vec2 p, Vec2 v1, Vec2 v2, Vec2 v3) {
+	bool b1 = sign(p, v1, v2) < 0.0f;
+	bool b2 = sign(p, v2, v3) < 0.0f;
+	bool b3 = sign(p, v3, v1) < 0.0f;
+
+	return ((b1 == b2) && (b2 == b3));
+}

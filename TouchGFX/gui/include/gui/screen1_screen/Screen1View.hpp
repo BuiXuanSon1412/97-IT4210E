@@ -113,6 +113,9 @@ private:
     void initializeShootingLine();
     void updateShootingLine();
     void renderShootingLine();
+
+    bool checkCollisionArea(Vec2 p, Vec2 v1, Vec2 v2, Vec2 v3);
+    float sign(Vec2 v1, Vec2 v2, Vec2 v3);
 };
 
 #endif // SCREEN1VIEW_HPP
