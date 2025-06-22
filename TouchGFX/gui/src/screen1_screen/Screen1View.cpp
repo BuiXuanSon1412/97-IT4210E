@@ -317,24 +317,18 @@ void Screen1View::updateHighScore() {
 }
 
 void Screen1View::renderRealtimeScoreTextArea() {
-    touchgfx::Unicode::UnicodeChar textAreaBuffer[10];
-	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(currentScore));
-	realtimeScoreTextArea.setWildcard(textAreaBuffer);
+	Unicode::snprintf(realtimeScoreTextAreaBuffer, sizeof(realtimeScoreTextAreaBuffer), "%05d", (int)(currentScore));
 	realtimeScoreTextArea.setVisible(true);
 	realtimeScoreTextArea.invalidate();
 }
-void Screen1View::renderScoreContainer() {
-	touchgfx::Unicode::UnicodeChar textAreaBuffer[10];
-	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(currentScore));
-	currentScoreTextArea.setWildcard(textAreaBuffer);
 
-	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(highScore));
-	currentScoreTextArea.setWildcard(textAreaBuffer);
+void Screen1View::renderScoreContainer() {
+	Unicode::snprintf(currentScoreTextAreaBuffer, sizeof(currentScoreTextAreaBuffer), "%05d", (int)(currentScore));
+	Unicode::snprintf(highScoreTextAreaBuffer, sizeof(highScoreTextAreaBuffer), "%05d", (int)(highScore));
 
 	scoreContainer.setVisible(true);
 	scoreContainer.invalidate();
 }
-
 void Screen1View::updateEggBitmapIDRange() {
 	// The number of types of egg increases , the density of similarly colored egg decreases
 	// Estimated highest score is 99999
