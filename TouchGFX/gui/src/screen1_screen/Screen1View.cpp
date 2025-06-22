@@ -103,7 +103,7 @@ void Screen1View::handleTickEvent() {
 		updateDEggBatchY();
 
 		if (shootingEggState == AIRBORNE) {
-			//Index shootingEggIndex = detectCollisionBetweenShootingEggAndEggBatch();
+			Index shootingEggIndex = detectCollisionBetweenShootingEggAndEggBatch();
 			// detect which eggs shooting egg can drop and update 'eggBatchState'
 			//if (shootingEggIndex.rowIndex != -1 && shootingEggIndex.colIndex != -1) {
 				//uint16_t additionalScore = updateEggBatchAfterCollision(shootingEggIndex);
@@ -364,5 +364,141 @@ uint32_t Screen1View::lcd_rand() {
 	return seed;
 }
 
+Index Screen1View::detectCollisionBetweenShootingEggAndEggBatch() {
+	if (shootingEggY - 0.5 * EGG_HEIGHT > eggBatchY[startRowIndex] + 0.5 * EGG_HEIGHT) return {-1, -1};
+
+	int i = startRowIndex;
+	do {
+		int numOfCols = (i % 2 == 0 ? NUM_COLS-1 : NUM_COLS);
+		int newNumOfCols = (numOfCols == NUM_COLS ? NUM_COLS-1 : NUM_COLS);
+
+		for (int j = 0; j < numOfCols; j++) {
+			if (eggBatchState[i][j]) {
+				float x = eggBatch[i][j].getX() + 0.5 * EGG_WIDTH;
+				float y = eggBatchY[i];
+				if (dShootingEggX <= 0) {
+					if (shootingEggX - 0.5 * EGG_WIDTH > x - 0.5 * EGG_WIDTH
+						&& shootingEggX - 0.5 * EGG_WIDTH < x + 0.5 * EGG_WIDTH) {
+						if (shootingEggY - 0.5 * EGG_HEIGHT > y
+							&& shootingEggY - 0.5 * EGG_HEIGHT < y + 0.5 * EGG_WIDTH) {
+							// bottom-right
+							int rowIndex = (i+1) % NUM_ROWS;
+							int colIndex = (i % 2 == 0 ? j+1 : j);
+							if (colIndex < newNumOfCols
+									&& (eggBatchState[rowIndex][colIndex] == false
+									|| i == startRowIndex)
+								) return {rowIndex, colIndex};
+						}
+						else if (shootingEggY - 0.5 * EGG_HEIGHT > y - 0.5 * EGG_WIDTH
+								&& shootingEggY - 0.5 * EGG_HEIGHT < y) {
+							// right
+							int rowIndex = i;
+							int colIndex = j+1;
+							if (colIndex < numOfCols
+								&& eggBatchState[rowIndex][colIndex] == false) return {rowIndex, colIndex};
+						}
+						else if (shootingEggY - 0.5 * EGG_HEIGHT < y - 0.5 * EGG_WIDTH
+								&& shootingEggY - 0.5 * EGG_HEIGHT > y - 1.5 * EGG_WIDTH) {
+								// top-right
+								int rowIndex = (i-1 < 0 ? i-1+NUM_ROWS : i-1);
+								int colIndex = (i % 2 == 0 ? j+1 : j);
+								if (colIndex < newNumOfCols
+									&& eggBatchState[rowIndex][colIndex] == false) return {rowIndex, colIndex};
+
+						}
+					}
+					else if (shootingEggX + 0.5 * EGG_WIDTH > x - 0.5 * EGG_WIDTH
+							&& shootingEggX + 0.5 * EGG_WIDTH < x + 0.5 * EGG_WIDTH) {
+						if (shootingEggY - 0.5 * EGG_HEIGHT < y + 0.5 * EGG_HEIGHT) {
+							// bottom-left
+							int rowIndex = (i+1) % NUM_ROWS;
+							int colIndex = (i % 2 == 0 ? j : j-1);
+							if (colIndex >= 0
+								&& (eggBatchState[rowIndex][colIndex] == false
+									|| i == startRowIndex)
+								) return {rowIndex, colIndex};
+						}
+					}
+				}
+				else if (dShootingEggX > 0) {
+					if (shootingEggX + 0.5 * EGG_WIDTH > x - 0.5 * EGG_WIDTH
+						&& shootingEggX + 0.5 * EGG_WIDTH < x + 0.5 * EGG_WIDTH) {
+						if (shootingEggY - 0.5 * EGG_HEIGHT > y
+							&& shootingEggY - 0.5 * EGG_HEIGHT < y + 0.5 * EGG_WIDTH) {
+							// bottom-left
+							int rowIndex = (i+1) % NUM_ROWS;
+							int colIndex = (i % 2 == 0 ? j : j-1);
+							if (colIndex >= 0
+								&& (eggBatchState[rowIndex][colIndex] == false
+									|| i == startRowIndex)
+								) return {rowIndex, colIndex};
+						}
+						else if (shootingEggY - 0.5 * EGG_HEIGHT > y - 0.5 * EGG_WIDTH
+								&& shootingEggY - 0.5 * EGG_HEIGHT < y) {
+							// left
+							int rowIndex = i;
+							int colIndex = j-1;
+							if (colIndex >= 0
+								&& eggBatchState[rowIndex][colIndex] == false) return {rowIndex, colIndex};
+						}
+						else if (shootingEggY - 0.5 * EGG_HEIGHT > y - 1.5 * EGG_WIDTH
+								&& shootingEggY - 0.5 * EGG_HEIGHT < y - 0.5 * EGG_WIDTH) {
+								// top-left
+								int rowIndex = (i-1 < 0 ? i-1+NUM_ROWS : i-1);
+								int colIndex = (i % 2 == 0 ? j : j-1);
+								if (colIndex >= 0
+									&& eggBatchState[rowIndex][colIndex] == false) return {rowIndex, colIndex};
+							}
+
+					}
+					else if (shootingEggX - 0.5 * EGG_WIDTH < x + 0.5 * EGG_WIDTH
+							&& shootingEggX - 0.5 * EGG_WIDTH > x - 0.5 * EGG_WIDTH) {
+						if (shootingEggY - 0.5 * EGG_HEIGHT < y + 0.5 * EGG_HEIGHT) {
+							// bottom-right
+							int rowIndex = (i+1) % NUM_ROWS;
+							int colIndex = (i % 2 == 0 ? j+1 : j);
+							if (colIndex < newNumOfCols
+								&& (eggBatchState[rowIndex][colIndex] == false
+									|| i == startRowIndex)
+								) return {rowIndex, colIndex};
+						}
+					}
+				}
+			}
+		}
+		i = i-1;
+		if (i < 0) i += NUM_ROWS;
+	} while (i != startRowIndex);
+	return {-1, -1};
+}
+
+
+
+Index IndexQueue::front() {
+	return q[head];
+}
+
+bool IndexQueue::pop() {
+	if (empty()) return false;
+	else {
+		head = (head+1) % MAX_LEN;
+		return true;
+	}
+}
+
+bool IndexQueue::push(Index index) {
+	if (full()) return false;
+	else {
+		q[tail] = index;
+		tail = (tail+1) % MAX_LEN;
+		return true;
+	}
+}
+bool IndexQueue::empty() {
+	return head == tail;
+}
+bool IndexQueue::full() {
+	return ((tail+1) % MAX_LEN) == head;
+}
 
 

@@ -118,7 +118,7 @@ private:
     void updateShootingLine();
     void renderShootingLine();
 
-
+    Index detectCollisionBetweenShootingEggAndEggBatch();
     bool checkCollisionArea(Vec2 p, Vec2 v1, Vec2 v2, Vec2 v3);
     float sign(Vec2 v1, Vec2 v2, Vec2 v3);
 
