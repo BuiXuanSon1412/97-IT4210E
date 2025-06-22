@@ -113,6 +113,17 @@ private:
     void initializeShootingLine();
     void updateShootingLine();
     void renderShootingLine();
+
+    void updateCurrentScore(uint16_t additionalScore);
+    void updateHighScore();
+
+    void renderRealtimeScoreTextArea();
+    void renderScoreContainer();
+
+    void updateEggBitmapIDRange();
+    void updateDEggBatchY();
+
+    void updateEggBatchAfterLevelUp();
 };
 
 #endif // SCREEN1VIEW_HPP
