@@ -52,9 +52,9 @@ protected:
     touchgfx::TextAreaWithOneWildcard realtimeScoreTextArea;
     touchgfx::Container scoreContainer;
     touchgfx::BoxWithBorder scoreContainerBackgroundBoxWithBorder;
-    touchgfx::TextArea highScoreLabelTextArea;
-    touchgfx::TextAreaWithOneWildcard currentScoreTextArea;
     touchgfx::TextAreaWithOneWildcard highScoreTextArea;
+    touchgfx::TextAreaWithOneWildcard currentScoreTextArea;
+    touchgfx::TextArea highScoreLabelTextArea;
     touchgfx::TextArea currentScoreLabelTextArea;
     touchgfx::ImageButtonStyle< touchgfx::ClickButtonTrigger >  playButton;
 
