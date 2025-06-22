@@ -78,6 +78,7 @@ LTDC_HandleTypeDef hltdc;
 SPI_HandleTypeDef hspi5;
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
 
 SDRAM_HandleTypeDef hsdram1;
 
@@ -123,6 +124,7 @@ static void MX_DMA2D_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_ADC2_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartControllerTask(void *argument);
@@ -155,6 +157,57 @@ void                      IOE_Delay(uint32_t Delay);
 void                      IOE_Write(uint8_t Addr, uint8_t Reg, uint8_t Value);
 uint8_t                   IOE_Read(uint8_t Addr, uint8_t Reg);
 uint16_t                  IOE_ReadMultiple(uint8_t Addr, uint8_t Reg, uint8_t *pBuffer, uint16_t Length);
+
+void DF_SendCommand(uint8_t cmd, uint16_t param)
+{
+    uint8_t buf[10];
+    uint16_t checksum;
+
+    buf[0] = 0x7E;
+    buf[1] = 0xFF;
+    buf[2] = 0x06;
+    buf[3] = cmd;
+    buf[4] = 0x00;  // no feedback
+    buf[5] = (param >> 8) & 0xFF;
+    buf[6] = param & 0xFF;
+
+    checksum = 0 - (buf[1] + buf[2] + buf[3] + buf[4] + buf[5] + buf[6]);
+    buf[7] = (checksum >> 8) & 0xFF;
+    buf[8] = checksum & 0xFF;
+    buf[9] = 0xEF;
+
+    HAL_UART_Transmit(&huart2, buf, 10, 100);
+}
+void DF_Init()
+{
+    HAL_Delay(500);               // Đợi DFPlayer khởi động
+    DF_SendCommand(0x09, 0x02);   // Chọn thiết bị: TF card (microSD)
+    HAL_Delay(200);
+    DF_SendCommand(0x06, 15);     // Set volume (0-30)
+}
+
+
+void DF_PlayFile(uint16_t fileNumber)
+{
+    DF_SendCommand(0x08, fileNumber);  // Play file n
+}
+
+void DF_Next()
+{
+    DF_SendCommand(0x01, 0);
+}
+
+void DF_Previous()
+{
+    DF_SendCommand(0x02, 0);
+}
+
+void DF_SetVolume(uint8_t vol)
+{
+    if (vol > 30) vol = 30;
+    DF_SendCommand(0x06, vol);
+}
+
 
 /* USER CODE END PFP */
 
@@ -204,11 +257,14 @@ int main(void)
   MX_ADC1_Init();
   MX_ADC2_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
-
+  DF_Init();
+  HAL_Delay(500);
+  DF_PlayFile(1);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -671,6 +727,39 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 9600;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
 
 }
 
