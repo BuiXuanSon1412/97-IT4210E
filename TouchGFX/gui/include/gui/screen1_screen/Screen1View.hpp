@@ -60,6 +60,7 @@ protected:
     const int framePerSecond = 30;
     float dEggBatchY;
     bool gameState;
+    uint32_t frameCountFromStart;
     uint32_t lastUpdateTickCount;
 
     // seed for random generator
@@ -97,6 +98,9 @@ protected:
     const int stepsForEvenRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, 0}, {-1, 1}, {1, 0}, {1, 1}};
     const int stepsForOddRowIndex[6][2] = {{0, -1}, {0, 1}, {-1, -1}, {-1, 0}, {1, -1}, {1, 0}};
 
+    const int upperBoundScoreByLevel[4] = {100, 300, 1000, 5000};
+    int level;
+
 private:
     void initializeEggBatch();
     void updateEggBatch();
@@ -131,6 +135,10 @@ private:
 
     uint16_t generateRandomEggBitmapID();
     uint32_t lcd_rand();
+
+    //uint16_t updateEggBatchAfterCollision(Index shootingEggIndex);
+    //void updateShootingEggAfterCollision();
+    //void updateNextShootingEggAfterCollision();
 
 };
 

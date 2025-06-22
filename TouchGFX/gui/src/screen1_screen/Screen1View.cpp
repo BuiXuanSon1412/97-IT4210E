@@ -56,7 +56,30 @@ void Screen1View::tearDownScreen()
 }
 
 void Screen1View::onPlayButtonClicked() {
-	
+	// hide box score to start the game
+	scoreContainer.setVisible(false);
+	scoreContainer.invalidate();
+
+	// start display the real-time score
+	renderRealtimeScoreTextArea();
+
+	// re-initialize the configuration data in a game
+	gameState = true;
+	startRowIndex = 4;
+	currentScore = 0;
+	eggBitmapIDRange = 3;
+	dEggBatchY = 0.03;
+	frameCountFromStart = 0;
+	level = 0;
+	seed = osKernelGetTickCount();
+
+	// initialize components in a game
+	initializeEggBatch();
+	initializeShootingEgg();
+	initializeNextShootingEgg();
+
+	// retrieve first time rendering
+	lastUpdateTickCount = osKernelGetTickCount();
 }
 
 void Screen1View::handleTickEvent() {
@@ -254,13 +277,19 @@ void Screen1View::updateHighScore() {
 }
 
 void Screen1View::renderRealtimeScoreTextArea() {
-	Unicode::snprintf(realtimeScoreTextAreaBuffer, sizeof(realtimeScoreTextAreaBuffer), "%05d", (int)(currentScore));
+    touchgfx::Unicode::UnicodeChar textAreaBuffer[10];
+	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(currentScore));
+	realtimeScoreTextArea.setWildcard(textAreaBuffer);
 	realtimeScoreTextArea.setVisible(true);
 	realtimeScoreTextArea.invalidate();
 }
 void Screen1View::renderScoreContainer() {
-	Unicode::snprintf(currentScoreTextAreaBuffer, sizeof(currentScoreTextAreaBuffer), "%05d", (int)(currentScore));
-	Unicode::snprintf(highScoreTextAreaBuffer, sizeof(highScoreTextAreaBuffer), "%05d", (int)(highScore));
+	touchgfx::Unicode::UnicodeChar textAreaBuffer[10];
+	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(currentScore));
+	currentScoreTextArea.setWildcard(textAreaBuffer);
+
+	Unicode::snprintf(textAreaBuffer, sizeof(textAreaBuffer), "%05d", (int)(highScore));
+	currentScoreTextArea.setWildcard(textAreaBuffer);
 
 	scoreContainer.setVisible(true);
 	scoreContainer.invalidate();
@@ -294,4 +323,6 @@ uint32_t Screen1View::lcd_rand() {
 	seed = (1103515245 * seed + 12345) & 0x7fffffff;
 	return seed;
 }
+
+
 
