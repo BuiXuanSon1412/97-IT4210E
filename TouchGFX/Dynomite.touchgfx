@@ -66,18 +66,20 @@
           {
             "Type": "TextArea",
             "Name": "realtimeScoreTextArea",
-            "X": 209,
-            "Y": 304,
-            "Width": 25,
-            "Height": 10,
+            "X": 169,
+            "Y": 287,
+            "Width": 65,
+            "Height": 20,
             "TextId": "__SingleUse_5N03",
             "TextRotation": "0",
             "Color": {
-              "Red": 235,
-              "Green": 188
+              "Red": 31,
+              "Blue": 235
             },
             "AutoSize": true,
-            "Wildcard1": {}
+            "Wildcard1": {
+              "TextId": "__SingleUse_EAQD"
+            }
           },
           {
             "Type": "Container",
@@ -106,6 +108,42 @@
               },
               {
                 "Type": "TextArea",
+                "Name": "highScoreTextArea",
+                "X": 57,
+                "Y": 105,
+                "Width": 65,
+                "Height": 20,
+                "TextId": "__SingleUse_9NVH",
+                "TextRotation": "0",
+                "Color": {
+                  "Red": 207
+                },
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_DYV7"
+                }
+              },
+              {
+                "Type": "TextArea",
+                "Name": "currentScoreTextArea",
+                "X": 57,
+                "Y": 44,
+                "Width": 65,
+                "Height": 20,
+                "TextId": "__SingleUse_WP1F",
+                "TextRotation": "0",
+                "Color": {
+                  "Red": 49,
+                  "Green": 196
+                },
+                "AutoSize": true,
+                "Wildcard1": {
+                  "TextId": "__SingleUse_Y08F"
+                },
+                "WideTextAction": 4
+              },
+              {
+                "Type": "TextArea",
                 "Name": "highScoreLabelTextArea",
                 "X": 23,
                 "Y": 78,
@@ -119,38 +157,6 @@
                   "Blue": 45
                 },
                 "AutoSize": true
-              },
-              {
-                "Type": "TextArea",
-                "Name": "currentScoreTextArea",
-                "X": 46,
-                "Y": 44,
-                "Width": 86,
-                "Height": 20,
-                "TextId": "__SingleUse_WP1F",
-                "TextRotation": "0",
-                "Color": {
-                  "Red": 49,
-                  "Green": 196
-                },
-                "AutoSize": true,
-                "Wildcard1": {},
-                "WideTextAction": 4
-              },
-              {
-                "Type": "TextArea",
-                "Name": "highScoreTextArea",
-                "X": 46,
-                "Y": 105,
-                "Width": 86,
-                "Height": 20,
-                "TextId": "__SingleUse_9NVH",
-                "TextRotation": "0",
-                "Color": {
-                  "Red": 207
-                },
-                "AutoSize": true,
-                "Wildcard1": {}
               },
               {
                 "Type": "TextArea",
