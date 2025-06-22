@@ -124,6 +124,9 @@ private:
     void updateDEggBatchY();
 
     void updateEggBatchAfterLevelUp();
+
+    uint16_t generateRandomEggBitmapID();
+    uint32_t lcd_rand();
 };
 
 #endif // SCREEN1VIEW_HPP

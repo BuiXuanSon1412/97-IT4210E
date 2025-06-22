@@ -271,3 +271,13 @@ void Screen1View::updateDEggBatchY() {
 void Screen1View::updateEggBatchAfterLevelUp() {
 
 }
+
+uint16_t Screen1View::generateRandomEggBitmapID() {
+	uint32_t randomEggBitmapID = lcd_rand() % eggBitmapIDRange;
+	return eggBitmapID[randomEggBitmapID];
+}
+
+uint32_t Screen1View::lcd_rand() {
+	seed = (1103515245 * seed + 12345) & 0x7fffffff;
+	return seed;
+}
