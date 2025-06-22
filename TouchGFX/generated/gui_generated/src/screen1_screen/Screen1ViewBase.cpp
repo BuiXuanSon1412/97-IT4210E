@@ -54,7 +54,8 @@ Screen1ViewBase::Screen1ViewBase() :
     realtimeScoreTextArea.setXY(169, 287);
     realtimeScoreTextArea.setColor(touchgfx::Color::getColorFromRGB(31, 0, 235));
     realtimeScoreTextArea.setLinespacing(0);
-    realtimeScoreTextArea.setWildcard(touchgfx::TypedText(T___SINGLEUSE_EAQD).getText());
+    Unicode::snprintf(realtimeScoreTextAreaBuffer, REALTIMESCORETEXTAREA_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_EAQD).getText());
+    realtimeScoreTextArea.setWildcard(realtimeScoreTextAreaBuffer);
     realtimeScoreTextArea.resizeToCurrentText();
     realtimeScoreTextArea.setTypedText(touchgfx::TypedText(T___SINGLEUSE_5N03));
     add(realtimeScoreTextArea);
@@ -69,7 +70,8 @@ Screen1ViewBase::Screen1ViewBase() :
     highScoreTextArea.setXY(57, 105);
     highScoreTextArea.setColor(touchgfx::Color::getColorFromRGB(207, 0, 0));
     highScoreTextArea.setLinespacing(0);
-    highScoreTextArea.setWildcard(touchgfx::TypedText(T___SINGLEUSE_DYV7).getText());
+    Unicode::snprintf(highScoreTextAreaBuffer, HIGHSCORETEXTAREA_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_DYV7).getText());
+    highScoreTextArea.setWildcard(highScoreTextAreaBuffer);
     highScoreTextArea.resizeToCurrentText();
     highScoreTextArea.setTypedText(touchgfx::TypedText(T___SINGLEUSE_9NVH));
     scoreContainer.add(highScoreTextArea);
@@ -77,7 +79,8 @@ Screen1ViewBase::Screen1ViewBase() :
     currentScoreTextArea.setXY(57, 44);
     currentScoreTextArea.setColor(touchgfx::Color::getColorFromRGB(49, 196, 0));
     currentScoreTextArea.setLinespacing(0);
-    currentScoreTextArea.setWildcard(touchgfx::TypedText(T___SINGLEUSE_Y08F).getText());
+    Unicode::snprintf(currentScoreTextAreaBuffer, CURRENTSCORETEXTAREA_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_Y08F).getText());
+    currentScoreTextArea.setWildcard(currentScoreTextAreaBuffer);
     currentScoreTextArea.resizeToCurrentText();
     currentScoreTextArea.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WP1F));
     scoreContainer.add(currentScoreTextArea);
