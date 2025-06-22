@@ -136,9 +136,9 @@ private:
     uint16_t generateRandomEggBitmapID();
     uint32_t lcd_rand();
 
-    //uint16_t updateEggBatchAfterCollision(Index shootingEggIndex);
-    //void updateShootingEggAfterCollision();
-    //void updateNextShootingEggAfterCollision();
+    uint16_t updateEggBatchAfterCollision(Index shootingEggIndex);
+    void updateShootingEggAfterCollision();
+    void updateNextShootingEggAfterCollision();
 
 };
 

@@ -105,13 +105,13 @@ void Screen1View::handleTickEvent() {
 		if (shootingEggState == AIRBORNE) {
 			Index shootingEggIndex = detectCollisionBetweenShootingEggAndEggBatch();
 			// detect which eggs shooting egg can drop and update 'eggBatchState'
-			//if (shootingEggIndex.rowIndex != -1 && shootingEggIndex.colIndex != -1) {
-				//uint16_t additionalScore = updateEggBatchAfterCollision(shootingEggIndex);
-				//updateCurrentScore(additionalScore);
-				//updateShootingEggAfterCollision();
-				//updateNextShootingEggAfterCollision();
-				//updateEggBitmapIDRange();
-			//}
+			if (shootingEggIndex.rowIndex != -1 && shootingEggIndex.colIndex != -1) {
+				uint16_t additionalScore = updateEggBatchAfterCollision(shootingEggIndex);
+				updateCurrentScore(additionalScore);
+				updateShootingEggAfterCollision();
+				updateNextShootingEggAfterCollision();
+				updateEggBitmapIDRange();
+			}
 		}
 
 		renderEggBatch();
@@ -336,7 +336,6 @@ void Screen1View::renderScoreContainer() {
 }
 
 void Screen1View::updateEggBitmapIDRange() {
-	// 3 -> 4 -> 5 -> 6
 	// The number of types of egg increases , the density of similarly colored egg decreases
 	// Estimated highest score is 99999
 	if (level < 4 && currentScore > upperBoundScoreByLevel[level]) {
@@ -354,6 +353,7 @@ void Screen1View::updateEggBatchAfterLevelUp() {
 
 }
 
+/* LCD random generator */
 uint16_t Screen1View::generateRandomEggBitmapID() {
 	uint32_t randomEggBitmapID = lcd_rand() % eggBitmapIDRange;
 	return eggBitmapID[randomEggBitmapID];
@@ -364,6 +364,8 @@ uint32_t Screen1View::lcd_rand() {
 	return seed;
 }
 
+/* detecting collision process:
+ * return the number of eggs relevant to shooting egg */
 Index Screen1View::detectCollisionBetweenShootingEggAndEggBatch() {
 	if (shootingEggY - 0.5 * EGG_HEIGHT > eggBatchY[startRowIndex] + 0.5 * EGG_HEIGHT) return {-1, -1};
 
@@ -473,7 +475,7 @@ Index Screen1View::detectCollisionBetweenShootingEggAndEggBatch() {
 }
 
 
-
+/* definition of IndexQueue class: queue of struct Index used in BFS algorithm when update egg of batch */
 Index IndexQueue::front() {
 	return q[head];
 }
@@ -501,4 +503,129 @@ bool IndexQueue::full() {
 	return ((tail+1) % MAX_LEN) == head;
 }
 
+/* Definitions of operations used to update data of components after collision */
 
+uint16_t Screen1View::updateEggBatchAfterCollision(Index shootingEggIndex) {
+	// temporary update shootingEgg on eggBatch
+	int rowIndex = shootingEggIndex.rowIndex;
+	int colIndex = shootingEggIndex.colIndex;
+
+	eggBatchBitmapID[rowIndex][colIndex] = shootingEggBitmapID;
+	eggBatchState[rowIndex][colIndex] = true;
+
+	// if shootingEgg landed on the new row of eggBatch, update ...
+	if (rowIndex == (startRowIndex+1) % NUM_ROWS) {
+		int numOfCols = (rowIndex % 2 == 0 ? NUM_COLS-1 : NUM_COLS);
+		for (int j = 0; j < numOfCols; j++) {
+			if (j != colIndex) {
+				eggBatchState[rowIndex][j] = false;
+			}
+		}
+		eggBatchY[rowIndex] = eggBatchY[startRowIndex] + EGG_HEIGHT;
+		startRowIndex = rowIndex;
+	}
+
+	// detect which eggs of eggBatch drop:
+	// using BFS for simplicity to reach to all eggBatch 's elements with the color of shootingEgg
+
+	Index eggIndices[MAX_LEN];
+	uint16_t eggCount = 0;
+
+	bool visited[NUM_ROWS][NUM_COLS];
+	memset(visited, 0, sizeof(visited));
+	visited[rowIndex][colIndex] = true;
+	IndexQueue Q;
+	Q.push(shootingEggIndex);
+
+	int steps[6][2];
+
+	while(!Q.empty()) {
+		Index eggIndex = Q.front();
+		Q.pop();
+		eggIndices[eggCount++] = eggIndex;
+
+		int currentRowIndex = eggIndex.rowIndex;
+		int currentColIndex = eggIndex.colIndex;
+
+		if (currentRowIndex % 2 == 0) {
+			std::memcpy(steps, stepsForEvenRowIndex, sizeof(stepsForEvenRowIndex));
+		}
+		else {
+			std::memcpy(steps, stepsForOddRowIndex, sizeof(stepsForOddRowIndex));
+		}
+		for (int i = 0; i < 6; i++) {
+			int newRowIndex = currentRowIndex + steps[i][0];
+			if (newRowIndex < 0) newRowIndex += NUM_ROWS;
+			else if (newRowIndex >= NUM_ROWS) newRowIndex -= NUM_ROWS;
+			int newColIndex = currentColIndex + steps[i][1];
+
+			int numOfCols = (newRowIndex % 2 == 0 ? NUM_COLS-1 : NUM_COLS);
+			if (newColIndex >= 0
+				&& newColIndex < numOfCols
+				&& eggBatchY[newRowIndex] + 0.5 * EGG_HEIGHT > 0
+				&& eggBatchState[newRowIndex][newColIndex] == true
+				&& visited[newRowIndex][newColIndex] == false
+				&& eggBatchBitmapID[newRowIndex][newColIndex] == shootingEggBitmapID) {
+				Q.push({newRowIndex, newColIndex});
+				visited[newRowIndex][newColIndex] = true;
+			}
+		}
+	}
+
+	if (eggCount >= 3) {
+		for (int i = 0; i < eggCount; i++) {
+			eggBatchState[eggIndices[i].rowIndex][eggIndices[i].colIndex] = false;
+		}
+
+		// detect new startRowIndex ~ i
+		int i = startRowIndex;
+		do {
+			int numOfCols = (i % 2 == 0 ? NUM_COLS-1 : NUM_COLS);
+			bool empty = true;
+			for (int j = 0; j < numOfCols; j++) {
+				if (eggBatchState[i][j]) {
+					empty = false;
+					break;
+				}
+			}
+			if (!empty) break;
+			i = i-1;
+			if (i < 0) i = i + NUM_ROWS;
+		} while (i != startRowIndex);
+
+		// update y coordinate of new non-displayed rows
+		if (i != startRowIndex) {
+			float lastY = eggBatchY[(startRowIndex + 1) % NUM_ROWS];
+			int j = startRowIndex;
+			do {
+				eggBatchY[j] = lastY - EGG_HEIGHT;
+				lastY = eggBatchY[j];
+
+				int numOfCols = (j % 2 ? NUM_COLS-1 : NUM_COLS);
+				for (int k = 0; k < numOfCols; k++) {
+					eggBatchState[j][k] = true;
+				}
+
+				j = j-1;
+				if (j < 0) j = j + NUM_ROWS;
+			} while (j != i);
+
+			// update startRowIndex
+			startRowIndex = i;
+		}
+	}
+
+	return (eggCount < 3 ? 0 : eggCount);
+}
+
+void Screen1View::updateShootingEggAfterCollision() {
+	shootingEggBitmapID = nextShootingEggBitmapID;
+	shootingEggState = IDLE;
+	shootingEggX = SCREEN_WIDTH * 0.5;
+	shootingEggY = BASE_Y;
+}
+
+void Screen1View::updateNextShootingEggAfterCollision() {
+	nextShootingEggBitmapID = generateRandomEggBitmapID();
+	nextShootingEgg.setBitmap(nextShootingEggBitmapID);
+}
