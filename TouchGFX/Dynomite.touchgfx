@@ -139,8 +139,7 @@
                 "AutoSize": true,
                 "Wildcard1": {
                   "TextId": "__SingleUse_Y08F"
-                },
-                "WideTextAction": 4
+                }
               },
               {
                 "Type": "TextArea",

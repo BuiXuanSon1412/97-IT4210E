@@ -77,7 +77,6 @@ Screen1ViewBase::Screen1ViewBase() :
     currentScoreTextArea.setXY(57, 44);
     currentScoreTextArea.setColor(touchgfx::Color::getColorFromRGB(49, 196, 0));
     currentScoreTextArea.setLinespacing(0);
-    currentScoreTextArea.setWideTextAction(WIDE_TEXT_CHARWRAP);
     currentScoreTextArea.setWildcard(touchgfx::TypedText(T___SINGLEUSE_Y08F).getText());
     currentScoreTextArea.resizeToCurrentText();
     currentScoreTextArea.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WP1F));
